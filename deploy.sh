@@ -6,7 +6,7 @@ if [ $# -eq 0 ]
         echo Deploying to Pi
         ADDRESS="130.82.238.173"
         USERNAME="pi"
-        PASSWORD="swissless"
+        PASSWORD="xxx"
         SOURCETREE="/home/pi/"
         BINARYTREE="/home/pi/swissless/cmake"
         
