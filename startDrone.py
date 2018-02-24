@@ -1,7 +1,8 @@
 
-from detectColors import *
 
-from picamera import PiCamera
+import picamera
+import picamera.array
+
 from time import sleep
 
 from imgproc import *
@@ -34,7 +35,11 @@ def startCamera():
     greencount = 0
     for x in xrange(30): #capture for 1 min
         sleep(2)
-        camera.capture(cameraImg)
+        with picamera.PiCamera() as camera:
+            with picamera.array.PiRGBArray(camera) as output:
+                camera.capture(cameraImg, 'rgb')
+                print('Captured %dx%d image' % (
+                    cameraImg.array.shape[1], cameraImg.array.shape[0]))
         if (analyzeImage(cameraImg)): # if it is green, add to green count
             greencount = greencout + 1
 
@@ -46,7 +51,7 @@ def startCamera():
             camera.stop_preview()
             return False
 
-    
+
 
 
 
