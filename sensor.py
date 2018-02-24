@@ -1,45 +1,52 @@
 import RPi.GPIO as GPIO
 import time
-
 GPIO.setmode(GPIO.BCM)
 
-TRIG = 22
-ECHO = 23
+TRIG = 13
+ECHO = 19
 
 print "Distance measurement in progress"
 
-GPIO.setup(TRIG, GPIO.OUT)
-GPIO.setup(ECHO, GPIO.IN)
+def us_setup(trig_pin, echo_pin): # setup for ultrasonic sensors
+    GPIO.setup(trig_pin, GPIO.OUT)
+    GPIO.setup(echo_pin, GPIO.IN)
+    
+    GPIO.output(trig_pin, False) # switch output off for safety
+    return trig_pin, echo_pin
 
-GPIO.output(TRIG, False)
-print "Waiting for sensor to settle"
-time.sleep(2)
-
-def distance():
-
-    GPIO.output(TRIG, True)
+def get_distance(us_sensor):
+    trig, echo = us_sensor
+    GPIO.output(trig, True)
     time.sleep(0.00001)
-    GPIO.output(TRIG, False)
+    GPIO.output(trig, False)
 
-    while GPIO.input(ECHO) == 0:
+    pulse_start = time.time()
+    pulse_end = time.time()
+    while GPIO.input(echo) == 0:
         pulse_start = time.time()
 
-    while GPIO.input(ECHO) == 1:
+    while GPIO.input(echo) == 1:
         pulse_end = time.time()
 
     pulse_duration = pulse_end - pulse_start
-    #print pulse_duration
-    #print pulse_start
 
-    distance = pulse_duration * 17150
+    distance = pulse_duration * 17150 # check this factor
     distance = round(distance, 2)
-    print "distance:", distance, "cm"
+    return distance
+
+def teardown():
+    GPIO.cleanup()
 
 if __name__ == '__main__':
+    trig = 17
+    echo = 18
+    us5 = us_setup(trig, echo)
+    print us5
     try:
         while True:
-            distance()
-            time.sleep(1)
+            distance = get_distance(us5)
+            print 'distance:', distance, 'cm'
+            time.sleep(0.5)
 
     except KeyboardInterrupt:
-        GPIO.cleanup()
+        teardown()
