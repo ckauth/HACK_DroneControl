@@ -20,7 +20,7 @@ Once the start-light switches green, our drone sets out to fly through the tents
 
 ![InAction](https://github.com/ckauth/swissless/blob/master/illustrations/inAction.png)
 
-By the time of the final competition, all propellers (of the single available drone) had been broken - take it as a sign of nmotivation and persistence of all teams -, and the drone had to be carried through the space by following the direction that the propeller engines whistled.
+By the time of the final competition, all propellers (of the single available drone) had been broken - take it as a sign of motivation and persistence of all teams -, and the drone had to be carried through the space by following the direction that the propeller engines whistled.
 
 ![Panorama](https://github.com/ckauth/swissless/blob/master/illustrations/panorama.png)
 
