@@ -3,9 +3,10 @@ import time
 
 class ultrasonic_sensor:
 
-    def __init__(self, trig_pin, echo_pin):
+    def __init__(self, trig_pin, echo_pin, sign):
         self.trig_pin = trig_pin
         self.echo_pin = echo_pin
+        self.sign = sign
 
         GPIO.setup(trig_pin, GPIO.OUT)
         GPIO.output(trig_pin, False)
