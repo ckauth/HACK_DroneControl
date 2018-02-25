@@ -31,7 +31,7 @@ def taxi():
 
 
 def navigate_to_target(target_distance, sensor, control, pid, dbg_file=""):
-    pid.SetPoint = target_height
+    pid.SetPoint = target_distance
     pid.setSampleTime(0.01)
 
     if (dbg_file):
@@ -62,7 +62,7 @@ def navigate_to_target(target_distance, sensor, control, pid, dbg_file=""):
             pickle.dump([time_list, setpoint_list, distance_list, pid_list, control_list], f)
 
 def target_height(target_distance, dbg_file=""):
-    print ('targeting bottom distance to ' + target_distance + ' cm')
+    print ('targeting bottom distance to ' + str(target_distance) + ' cm')
     navigate_to_target(
         target_distance,
         bottom_sensor,
@@ -89,32 +89,32 @@ if __name__ == "__main__":
     taxi()
 
     if (1): #startCamera()):
-        target_height(70)
+        target_height(70, "takeoff")
 
     # navigation
     # go forward until 1.2m from front wall
-    navigate_to_target(120, front_sensor, pitch_control, PID)
+    #navigate_to_target(120, front_sensor, pitch_control, PID)
     # go left until 2m from right wall
-    navigate_to_target(250, right_sensor, roll_control, PID)
+    #navigate_to_target(250, right_sensor, roll_control, PID)
     # go left until 1.4m from left wall
-    navigate_to_target(140, left_sensor, roll_control, PID)
+    #navigate_to_target(140, left_sensor, roll_control, PID)
     # rotate 180 degrees and get images
     # TODO
 
     # rotate back to original position
 
     # go right until 2 m from left wall
-    navigate_to_target(250, left_sensor, roll_control, PID)
+    #navigate_to_target(250, left_sensor, roll_control, PID)
     # go right until 40cm from right wal
-    navigate_to_target(40, right_sensor, roll_control, PID)
+    #navigate_to_target(40, right_sensor, roll_control, PID)
     # go rear until 40cm from back wall
-    navigate_to_target(40, rear_sensor, pitch_control, PID)
+    #navigate_to_target(40, rear_sensor, pitch_control, PID)
 
     # land
-    navigate_to_target(20, bottom_sensor, throttle_control, PID)
-    navigate_to_target(10, bottom_sensor, throttle_control, PID)
-    navigate_to_target(5, bottom_sensor, throttle_control, PID)
-    navigate_to_target(0, bottom_sensor, throttle_control, PID)
+    #navigate_to_target(20, bottom_sensor, throttle_control, PID)
+    #navigate_to_target(10, bottom_sensor, throttle_control, PID)
+    #navigate_to_target(5, bottom_sensor, throttle_control, PID)
+    #navigate_to_target(0, bottom_sensor, throttle_control, PID)
 
     print("done")
     GPIO.cleanup()
