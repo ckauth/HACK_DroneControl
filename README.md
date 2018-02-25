@@ -1,3 +1,4 @@
+
 # Motivation
 
 Whoop whoop whoop -a nuclear plant is suffering a blackout, Rolls Royces' power engines kicked in to keep the fuel rods at safe cool temperatures. Suddenly one of the engines fails, it sets on fire!
@@ -9,6 +10,11 @@ To prevent a fallout from happening, you have 36 hours to program a drone that:
 - lands safely on the starting pad.
 
 That was Rolls Royces' challenge to us during the StartHack 2018 hackathon in St. Gallen, 23-25 February 2018.
+
+# Achievements
+![Drone](https://github.com/ckauth/swissless/illustrations/drone.gif)
+![InAction](https://github.com/ckauth/swissless/illustrations/inAction.gif)
+![Panorama](https://github.com/ckauth/swissless/illustrations/panorama.gif)
 
 # User Guide
 
