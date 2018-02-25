@@ -12,9 +12,9 @@ To prevent a fallout from happening, you have 36 hours to program a drone that:
 That was Rolls Royces' challenge to us during the StartHack 2018 hackathon in St. Gallen, 23-25 February 2018.
 
 # Achievements
-![Drone](https://github.com/ckauth/swissless/illustrations/drone.png)
-![InAction](https://github.com/ckauth/swissless/illustrations/inAction.png)
-![Panorama](https://github.com/ckauth/swissless/illustrations/panorama.png)
+![Drone](https://github.com/ckauth/swissless/blob/master/illustrations/drone.png)
+![InAction](https://github.com/ckauth/swissless/blob/master/illustrations/inAction.png)
+![Panorama](https://github.com/ckauth/swissless/blob/master/illustrations/panorama.png)
 
 # User Guide
 
