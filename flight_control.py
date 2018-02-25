@@ -23,6 +23,6 @@ class flight_control:
         if duty_cycle > 510:
             duty_cycle = 510
         if duty_cycle < -510:
-            duty_cycle = 510
+            duty_cycle = -510
         self.control.start(7.5 + duty_cycle/200.0) # duty cycle in percent
         return 1500 + duty_cycle
