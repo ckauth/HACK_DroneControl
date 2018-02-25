@@ -8,6 +8,17 @@ import numpy as np
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)
 
+# pins should be globally initialised
+
+def initalise_sensors(front, left, right, rear, bottom):
+    # ultrasound sensors
+    global front_sensor, rear_sensor, left_sensor, right_sensor, bottom_sensor
+    front_sensor = uss.ultrasonic_sensor(front)
+    left_sensor = uss.ultrasonic_sensor(left)
+    right_sensor = uss.ultrasonic_sensor(right)
+    rear_sensor = uss.ultrasonic_sensor(rear)
+    bottom_sensor = uss.ultrasonic_sensor(bottom)
+
 def taxi():
     print ("taxi")
  
@@ -52,15 +63,39 @@ def takeoff(target_height, sensor, pid, index):
     with open('flight_data.pkl' + str(index), 'wb') as f:
         pickle.dump([time_list, setpoint_list, actualheight_list, pidout_list, trottleout_list], f)
 
+# desired distance in coordinate system relative to current orientation of drone
+def move(x, y):
+    # get current position
+    dfront = front_sensor.distance()
+    dback = rear_sensor.distance()
+    dleft = left_sensor.distance()
+    dright = right_sensor.distance()
+
+    gfront = dfront - y
+    gback = dback + y
+    gleft = dleft + x
+    gright = dright - x
+
+    # need feedback loop to determine pitch and roll
+
 if __name__ == "__main__":
     
+    # ultrasound sensors
+    front = (11, 12)
+    left = (13, 15)
+    right = (16, 18)
+    rear = (29, 31)
+    bottom = (33, 35)
+    initialise_sensors(front, left, right, rear, bottom)
+
+    '''
     # ultrasound sensors
     #front_sensor = uss.ultrasonic_sensor(17, 18)
     #left_sensor = uss.ultrasonic_sensor(27, 22)
     #right_sensor = uss.ultrasonic_sensor(23, 24)
     #rear_sensor = uss.ultrasonic_sensor(5, 6)
     #bottom_sensor = uss.ultrasonic_sensor(13, 19)
-    bottom_sensor = uss.ultrasonic_sensor(33, 35)
+    bottom_sensor = uss.ultrasonic_sensor(33, 35)'''
 
     # flight controls
     #throttle_control = fc.flight_control(16)
@@ -89,6 +124,9 @@ if __name__ == "__main__":
             70.0,
             bottom_sensor,
             PID.PID(1, 0.2, 0.01),3)
+
+
+
 
     print("done")
     GPIO.cleanup()
