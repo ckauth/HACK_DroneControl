@@ -72,12 +72,13 @@ def target_height(target_distance, dbg_file=""):
 
 if __name__ == "__main__":
     
-    front = (11, 12, 1)
-    left = (13, 15, -1)
-    right = (16, 18, 1)
-    rear = (29, 31, -1)
-    bottom = (33, 35, 1)
-    initialise_sensors(front, left, right, rear, bottom)
+    # ultrasound sensors
+    #front_sensor = uss.ultrasonic_sensor(17, 18, 1)
+    #left_sensor = uss.ultrasonic_sensor(27, 22, -1)
+    #right_sensor = uss.ultrasonic_sensor(23, 24, 1)
+    #rear_sensor = uss.ultrasonic_sensor(5, 6, -1)
+    #bottom_sensor = uss.ultrasonic_sensor(13, 19, 1)
+    bottom_sensor = uss.ultrasonic_sensor(33, 35)
 
     # flight controls
     throttle_control = fc.flight_control(36)
@@ -90,6 +91,31 @@ if __name__ == "__main__":
 
     if (1): #startCamera()):
         target_height(70)
+
+    # navigation
+    # go forward until 1.2m from front wall
+    navigate_to_target(120, front_sensor, pitch_control, PID)
+    # go left until 2m from right wall
+    navigate_to_target(250, right_sensor, roll_control, PID)
+    # go left until 1.4m from left wall
+    navigate_to_target(140, left_sensor, roll_control, PID)
+    # rotate 180 degrees and get images
+    # TODO
+
+    # rotate back to original position
+
+    # go right until 2 m from left wall
+    navigate_to_target(250, left_sensor, roll_control, PID)
+    # go right until 40cm from right wal
+    navigate_to_target(40, right_sensor, roll_control, PID)
+    # go rear until 40cm from back wall
+    navigate_to_target(40, rear_sensor, pitch_control, PID)
+
+    # land
+    navigate_to_target(20, bottom_sensor, throttle_control, PID)
+    navigate_to_target(10, bottom_sensor, throttle_control, PID)
+    navigate_to_target(5, bottom_sensor, throttle_control, PID)
+    navigate_to_target(0, bottom_sensor, throttle_control, PID)
 
     print("done")
     GPIO.cleanup()
