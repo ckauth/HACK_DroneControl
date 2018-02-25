@@ -13,6 +13,15 @@ class flight_control:
         #print("dc " + str(duty_cycle))
         if duty_cycle > 510:
             duty_cycle = 510
+        if duty_cycle < -150:
+            duty_cycle = -150
+        self.control.start(7.5 + duty_cycle/200.0) # duty cycle in percent
+        return 1500 + duty_cycle
+
+    def pilot_control_uncalibratedDrone(self, duty_cycle):
+        #print("dc " + str(duty_cycle))
+        if duty_cycle > 510:
+            duty_cycle = 510
         if duty_cycle < -510:
             duty_cycle = 510
         self.control.start(7.5 + duty_cycle/200.0) # duty cycle in percent

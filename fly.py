@@ -19,8 +19,8 @@ def initalise_sensors(front, left, right, rear, bottom):
 def taxi():
     print ("taxi")
     # to arm the drone, arm & trottle must be minimal, all others medium
-    throttle_control.pilot_control(-510)
-    arm_control.pilot_control(-510)
+    throttle_control.pilot_control_uncalibratedDrone(-510)
+    arm_control.pilot_control_uncalibratedDrone(-510)
     pitch_control.pilot_control(0)
     roll_control.pilot_control(0)
     yaw_control.pilot_control(0)
@@ -44,7 +44,7 @@ def navigate_to_target(target_distance, sensor, control, pid, dbg_file=""):
     # give the drone 10 seconds to complete the move
     for i in range(1, 50):
         actual_distance = sensor.distance()
-        pid.update(actual_distance, 1) ####################3sensor.sign)
+        pid.update(actual_distance, sensor.sign)
         pid_out = pid.output
         control_out = control.pilot_control(pid_out)
 
@@ -87,14 +87,14 @@ if __name__ == "__main__":
     arm_control = fc.flight_control(32)
 
     # PIDs
-    heightPID = PID.PID(1, 0.2, 0.01)
+    heightPID = PID.PID(5, 0.5, 0.01)
     rollPID = PID.PID(1, 0.2, 0.01)
     pitchPID = PID.PID(1, 0.2, 0.01)
     taxi()
 
     #print(startCamera())
 
-    if (1): #startCamera()):
+    if (startDrone.startCamera()):
         #takeoff
         print('takeoff')
         navigate_to_target(70, bottom_sensor, throttle_control, heightPID, 'takeoff')
