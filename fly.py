@@ -16,11 +16,12 @@ def initalise_sensors(front, left, right, rear, bottom):
     rear_sensor = uss.ultrasonic_sensor(rear)
     bottom_sensor = uss.ultrasonic_sensor(bottom)
 
+
 def taxi():
     print ("taxi")
     # to arm the drone, arm & trottle must be minimal, all others medium
-    throttle_control.pilot_control_uncalibratedDrone(-510)
-    arm_control.pilot_control_uncalibratedDrone(-510)
+    throttle_control.pilot_control(-510)
+    arm_control.pilot_control(-510)
     pitch_control.pilot_control(0)
     roll_control.pilot_control(0)
     yaw_control.pilot_control(0)
@@ -61,14 +62,38 @@ def navigate_to_target(target_distance, sensor, control, pid, dbg_file=""):
         with open('flight_data_' + str(dbg_file) + '_.pkl', 'wb') as f:
             pickle.dump([time_list, setpoint_list, distance_list, pid_list, control_list], f)
 
-def target_height(target_distance, dbg_file=""):
-    print ('targeting bottom distance to ' + str(target_distance) + ' cm')
-    navigate_to_target(
-        target_distance,
-        bottom_sensor,
-        throttle_control,
-        PID.PID(1, 0.2, 0.01),
-        dbg_file)
+# needed because the drone suffered a little bit during this hackathon and is not in its best shape anymore ;)
+def navigate_to_target_trottleForUncalibratedDrone(target_distance, sensor, control, pid, dbg_file=""):
+    pid.SetPoint = target_distance
+    pid.setSampleTime(0.01)
+
+    if (dbg_file):
+        distance_list = []
+        time_list = []
+        setpoint_list = []
+        pid_list = []
+        control_list = []
+
+    # give the drone 10 seconds to complete the move
+    for i in range(1, 50):
+        actual_distance = sensor.distance()
+        pid.update(actual_distance, sensor.sign)
+        pid_out = pid.output
+        control_out = control.pilot_control_trottleForUncalibratedDrone(pid_out)
+
+        if (dbg_file):
+            distance_list.append(actual_distance)
+            setpoint_list.append(pid.SetPoint)
+            time_list.append(time.time())
+            pid_list.append(pid_out)
+            control_list.append(control_out)
+            print(control_out)
+        time.sleep(0.2)
+
+    if (dbg_file):
+        with open('flight_data_' + str(dbg_file) + '_.pkl', 'wb') as f:
+            pickle.dump([time_list, setpoint_list, distance_list, pid_list, control_list], f)
+
 
 if __name__ == "__main__":
        
@@ -97,7 +122,7 @@ if __name__ == "__main__":
     if (startDrone.startCamera()):
         #takeoff
         print('takeoff')
-        navigate_to_target(70, bottom_sensor, throttle_control, heightPID, 'takeoff')
+        navigate_to_target_trottleForUncalibratedDrone(70, bottom_sensor, throttle_control, heightPID, 'takeoff')
 
         # go forward until 1.2m from front wall
         print('forward')
