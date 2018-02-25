@@ -6,19 +6,23 @@ import pickle
 import time
 import numpy as np
 import RPi.GPIO as GPIO
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 
 def taxi():
     print ("taxi")
  
     # to arm the drone, arm & trottle must be minimal, all others medium
-    throttle_control.pilot_control(-500)
-    arm_control.pilot_control(-500)
+    throttle_control.pilot_control(-510)
+    arm_control.pilot_control(-510)
+    pitch_control.pilot_control(0)
+    roll_control.pilot_control(0)
+    yaw_control.pilot_control(0)
     time.sleep(2)
 
     # pull arm to maximum and we can start
-    arm_control.pilot_control(500)
-    
+    arm_control.pilot_control(510)
+    time.sleep(2)
+
 
 def takeoff(target_height, sensor, pid, index):
     print ("takeoff")
@@ -51,18 +55,22 @@ def takeoff(target_height, sensor, pid, index):
 if __name__ == "__main__":
     
     # ultrasound sensors
-    front_sensor = uss.ultrasonic_sensor(17, 18)
-    left_sensor = uss.ultrasonic_sensor(27, 22)
-    right_sensor = uss.ultrasonic_sensor(23, 24)
-    rear_sensor = uss.ultrasonic_sensor(5, 6)
-    bottom_sensor = uss.ultrasonic_sensor(13, 19)
+    #front_sensor = uss.ultrasonic_sensor(17, 18)
+    #left_sensor = uss.ultrasonic_sensor(27, 22)
+    #right_sensor = uss.ultrasonic_sensor(23, 24)
+    #rear_sensor = uss.ultrasonic_sensor(5, 6)
+    #bottom_sensor = uss.ultrasonic_sensor(13, 19)
+    bottom_sensor = uss.ultrasonic_sensor(33, 35)
 
     # flight controls
-    throttle_control = fc.flight_control(16)
-    pitch_control = fc.flight_control(26)
-    roll_control = fc.flight_control(20)
-    yaw_control = fc.flight_control(21)
-    arm_control = fc.flight_control(12)
+    #throttle_control = fc.flight_control(16)
+    throttle_control = fc.flight_control(36)
+    pitch_control = fc.flight_control(37)
+    roll_control = fc.flight_control(38)
+    yaw_control = fc.flight_control(40)
+    #GPIO.setmode(GPIO.BOARD)
+    arm_control = fc.flight_control(32)
+    #arm_control = fc.flight_control(12)
 
     taxi()
 
@@ -70,17 +78,17 @@ if __name__ == "__main__":
         takeoff(
             70.0,
             bottom_sensor,
-            PID.PID(5, 0.5, 0.05),1)
+            PID.PID(1, 0.2, 0.01),1)
 
         takeoff(
             100.0,
             bottom_sensor,
-            PID.PID(5, 0.5, 0.05),2)
+            PID.PID(1, 0.2, 0.01),2)
 
         takeoff(
             70.0,
             bottom_sensor,
-            PID.PID(5, 0.5, 0.05),3)
+            PID.PID(1, 0.2, 0.01),3)
 
     print("done")
     GPIO.cleanup()
