@@ -6,6 +6,7 @@ import pickle
 import time
 import numpy as np
 import RPi.GPIO as GPIO
+import camera
 GPIO.setmode(GPIO.BOARD)
 
 def initalise_sensors(front, left, right, rear, bottom):
@@ -94,6 +95,13 @@ def navigate_to_target_trottleForUncalibratedDrone(target_distance, sensor, cont
         with open('flight_data_' + str(dbg_file) + '_.pkl', 'wb') as f:
             pickle.dump([time_list, setpoint_list, distance_list, pid_list, control_list], f)
 
+    def rotate_drone(direction, control):
+        if direction == 'left':
+            control.pilot_control(-50)
+        else:
+            control.pilot_control(50)
+            
+
 
 if __name__ == "__main__":
        
@@ -138,7 +146,13 @@ if __name__ == "__main__":
 
         print('hidden')
         # rotate 180 degrees and get images
-        # TODO
+        camera.take_photos()
+        '''left_dist = left_sensor.distance()
+        right_dist = right_sensor.distance()
+        current_left = left_dist
+        current_right = right_dist
+        while current_leftright_dist and
+        rotate_drone()'''
 
         # rotate back to original position
 
