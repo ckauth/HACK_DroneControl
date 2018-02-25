@@ -11,9 +11,10 @@ class index:
         return '''<html>
         <head>
         <title>Results</title>
+        <meta http-equiv="refresh" content="5">
         </head>
         <body>
-        <img src='./images/image.jpg' />
+        <img src='./images/panorama_img_output.jpg' />
         </body>
         </html>'''
 
