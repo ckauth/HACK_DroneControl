@@ -28,7 +28,7 @@ class PID:
 
         self.output = 0.0
 
-    def update(self, feedback_value):
+    def update(self, feedback_value, sign):
         error = self.SetPoint - feedback_value
 
         self.current_time = time.time()
@@ -52,7 +52,7 @@ class PID:
             self.last_time = self.current_time
             self.last_error = error
 
-            self.output = self.PTerm + (self.Ki * self.ITerm) + (self.Kd * self.DTerm)
+            self.output = sign * (self.PTerm + (self.Ki * self.ITerm) + (self.Kd * self.DTerm))
 
     def setKp(self, proportional_gain):
         self.Kp = proportional_gain
