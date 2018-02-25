@@ -76,7 +76,7 @@ if __name__ == "__main__":
     front_sensor = uss.ultrasonic_sensor(11, 12, 1)
     left_sensor = uss.ultrasonic_sensor(13, 15, -1)
     right_sensor = uss.ultrasonic_sensor(16, 18, 1)
-    rear_sensor = uss.ultrasonic_sensor(29, 30, -1)
+    rear_sensor = uss.ultrasonic_sensor(29, 31, -1)
     bottom_sensor = uss.ultrasonic_sensor(33, 35, 1)
 
     # flight controls
