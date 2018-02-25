@@ -1,5 +1,4 @@
 
-from picamera import PiCamera
 import picamera
 import picamera.array
 
@@ -28,15 +27,15 @@ def analyzeImage(cameraImg):
     return (totalRed < totalGreen)
 
 def startCamera():
-    camera = PiCamera()
+    #camera = PiCamera()
 
-    camera.rotation = 180
-    camera.start_preview()
+    #camera.rotation = 180
+    #camera.start_preview()
     greencount = 0
     for x in xrange(30): #capture for 1 min
         sleep(2)
         with picamera.PiCamera() as camera:
-            with picamera.array.PiRGBArray(camera) as output:
+            with picamera.array.PiRGBArray(camera) as cameraImg:
                 camera.capture(cameraImg, 'rgb')
                 print('Captured %dx%d image' % (
                     cameraImg.array.shape[1], cameraImg.array.shape[0]))
@@ -45,13 +44,13 @@ def startCamera():
 
         if (greencount > 3):
             # it is green light; should depart
-            camera.stop_preview()
+            #camera.stop_preview()
             return True
         else:
-            camera.stop_preview()
+            #camera.stop_preview()
             return False
 
-
+startCamera()
 
 
 
