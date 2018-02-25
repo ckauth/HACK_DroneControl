@@ -1,7 +1,7 @@
 import PID
 import ultrasonic_sensor as uss
 import flight_control as fc
-from  startDrone import *
+import startDrone
 import pickle
 import time
 import numpy as np
@@ -71,7 +71,7 @@ def target_height(target_distance, dbg_file=""):
         dbg_file)
 
 if __name__ == "__main__":
-    
+       
     # ultrasound sensors
     front_sensor = uss.ultrasonic_sensor(11, 12, 1)
     left_sensor = uss.ultrasonic_sensor(13, 15, -1)
@@ -86,35 +86,49 @@ if __name__ == "__main__":
     yaw_control = fc.flight_control(40)
     arm_control = fc.flight_control(32)
 
+    # PIDs
+    heightPID = PID.PID(1, 0.2, 0.01)
+    rollPID = PID.PID(1, 0.2, 0.01)
+    pitchPID = PID.PID(1, 0.2, 0.01)
     taxi()
 
+    #print(startCamera())
+
     if (1): #startCamera()):
-        target_height(70, "takeoff")
+        #takeoff
+        print('takeoff')
+        navigate_to_target(70, bottom_sensor, throttle_control, heightPID, 'takeoff')
 
-    # navigation
-    # go forward until 1.2m from front wall
-    #navigate_to_target(120, front_sensor, pitch_control, PID)
-    # go left until 2m from right wall
-    #navigate_to_target(250, right_sensor, roll_control, PID)
-    # go left until 1.4m from left wall
-    #navigate_to_target(140, left_sensor, roll_control, PID)
-    # rotate 180 degrees and get images
-    # TODO
+        # go forward until 1.2m from front wall
+        print('forward')
+        navigate_to_target(120, front_sensor, pitch_control, pitchPID, 'forward')
 
-    # rotate back to original position
+        # go left until 2m from right wall
+        print('left')
+        navigate_to_target(250, right_sensor, roll_control, rollPID, 'left')
 
-    # go right until 2 m from left wall
-    #navigate_to_target(250, left_sensor, roll_control, PID)
-    # go right until 40cm from right wal
-    #navigate_to_target(40, right_sensor, roll_control, PID)
-    # go rear until 40cm from back wall
-    #navigate_to_target(40, rear_sensor, pitch_control, PID)
+        # go left until 1.4m from left wall
+        print('more left')
+        navigate_to_target(140, left_sensor, roll_control, rollPID, 'moreleft')
 
-    # land
-    #navigate_to_target(20, bottom_sensor, throttle_control, PID)
-    #navigate_to_target(10, bottom_sensor, throttle_control, PID)
-    #navigate_to_target(5, bottom_sensor, throttle_control, PID)
-    #navigate_to_target(0, bottom_sensor, throttle_control, PID)
+        print('hidden')
+        # rotate 180 degrees and get images
+        # TODO
+
+        # rotate back to original position
+
+        # go right until 2 m from left wall
+        navigate_to_target(250, left_sensor, roll_control, rollPID)
+        # go right until 40cm from right wal
+        navigate_to_target(40, right_sensor, roll_control, rollPID)
+        # go rear until 40cm from back wall
+        navigate_to_target(40, rear_sensor, pitch_control, pitchPID)
+
+        # land
+        navigate_to_target(20, bottom_sensor, throttle_control, heightPID)
+        navigate_to_target(10, bottom_sensor, throttle_control, heightPID)
+        navigate_to_target(5, bottom_sensor, throttle_control, heightPID)
+        navigate_to_target(0, bottom_sensor, throttle_control, heightPID)
 
     print("done")
     GPIO.cleanup()

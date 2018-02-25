@@ -65,9 +65,9 @@ def startCamera():
 	
 	print x
 	
-    return false
+    #return false
 
-startCamera()
+#startCamera()
 
 
 
